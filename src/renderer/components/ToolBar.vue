@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import FileUtil from "@/utils/files.js";
+
 export default {
   name: "tool-bar",
   components: {},
@@ -52,6 +54,7 @@ export default {
       this.select(state)
     },
     flushChromeDNS() {
+        FileUtil.flushChromeDNS();
       console.log("flushChromeDNS");
     }
   }

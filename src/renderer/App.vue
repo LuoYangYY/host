@@ -19,40 +19,54 @@
         ></host-list>
       </div>
       <div class="host-context-right">
-        <host-context></host-context>
+        <textarea v-model="showContext" @input="textareaHandle"></textarea>
+        <!-- <host-context
+            :filelist="filelist"
+          :showHostIndex="showHostIndex"
+          :showContext="showContext"
+          ></host-context> -->
       </div>
     </div>
+    <password></password>
   </div>
 </template>
 
 <script>
 import ToolBar from "@/components/ToolBar";
 import HostList from "@/components/HostList";
-import HostContext from "@/components/HostContext";
-import { app, remote } from "electron";
+import Password from "@/components/Password";
+import FileUtil from "@/utils/files.js";
+
+FileUtil.initFile();
 
 export default {
   name: "host",
   components: {
     ToolBar,
     HostList,
-    HostContext
+    Password
   },
   data() {
+    let localFiles = FileUtil.localFiles;
+    let useHostFiles = FileUtil.readConfigFile("use") || [];
+    useHostFiles.forEach((file, index) => {
+      localFiles.forEach(item => {
+        if (file.name === item.name) {
+          localFiles[index].isUse = true;
+        }
+      });
+    });
     return {
       showHostIndex: 0,
-      filelist: [
-        {
-          name: "local",
-          isEdit: false,
-          isUse: false
-        }
-      ]
+      filelist: localFiles,
+      showContext: ""
     };
+  },
+  mounted() {
+    this.readHostFile();
   },
   methods: {
     addFileHandler() {
-      console.log("addFileHandler", app);
       this.filelist.unshift({
         name: "",
         isEdit: true,
@@ -63,12 +77,20 @@ export default {
       this.filelist[index].isEdit = true;
       this.showHostIndex = index;
     },
-    editHostName(index, value) {
+    editHostName(item, index, value) {
+      let name = this.filelist[index].name;
+      if (!name) {
+        FileUtil.newFile(value);
+        this.readHostFile(value);
+      } else {
+        FileUtil.renameFile(name, value);
+      }
       this.filelist[index].isEdit = false;
       this.filelist[index].name = value;
     },
     toggleShowIndex(index) {
       this.showHostIndex = index;
+      this.readHostFile();
     },
     escEditHostName(item, index) {
       if (item.name === "") {
@@ -78,11 +100,39 @@ export default {
       }
     },
     deleteFileHandler() {
+      FileUtil.removeFile(this.filelist[this.showHostIndex].name);
       this.filelist.splice(this.showHostIndex, 1);
       this.showHostIndex = 0;
     },
     selectFileHandler(state) {
       this.filelist[this.showHostIndex].isUse = state;
+      let name = this.filelist[this.showHostIndex].name;
+      let useFiles = FileUtil.readConfigFile("use") || [];
+      let tempArr = JSON.parse(JSON.stringify(useFiles));
+
+      let isTrue = tempArr.some(item => item.name === name);
+      if (isTrue) {
+        useFiles.forEach((file, index) => {
+          if (file.name === name && !state) {
+            tempArr.splice(index, 1);
+          }
+        });
+      } else {
+        tempArr.push({ name: name });
+      }
+      FileUtil.writeConfigFile("use", tempArr);
+      FileUtil.writeHost();
+    },
+    readHostFile(name) {
+      if (name || this.filelist[this.showHostIndex]) {
+        this.showContext =
+          FileUtil.readFile(name || this.filelist[this.showHostIndex].name) ||
+          "";
+      }
+    },
+    textareaHandle(e) {
+      let value = e.target.value;
+      FileUtil.writeFile(this.filelist[this.showHostIndex].name, value);
     }
   }
 };
@@ -100,6 +150,7 @@ body {
   overflow: hidden;
 }
 #app {
+  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -129,5 +180,22 @@ body {
   height: 100%;
   overflow-y: scroll;
   padding: 0 20px;
+}
+/* .wrapper {
+  padding-top: 20px;
+  padding-bottom: 100px;
+  width: 100%;
+  height: 100%;
+} */
+.host-context-right textarea {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  background: none;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  line-height: 2;
+  letter-spacing: 1px;
 }
 </style>

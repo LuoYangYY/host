@@ -48,7 +48,7 @@ export default {
       if (value !== "") {
         let isTrue = this.filelist.some(item => item.name === value);
         if (!isTrue) {
-          this.$emit("editHostName", index, value);
+          this.$emit("editHostName", item, index, value);
         } else {
           this.$emit("esc", item, index);
         }
