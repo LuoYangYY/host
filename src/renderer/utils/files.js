@@ -12,6 +12,7 @@ let prefix = remote ?
     remote.app.getPath('userData')
     : app.getPath('userData');
 
+    console.log(prefix)
 const myHostPath = `${prefix}/MyHost`;
 const configPath = `${myHostPath}/.myhost`;
 const localPath = `${myHostPath}/local`;
@@ -158,9 +159,6 @@ EOD
     });
 };
 
-let changePassword = function(){
-    console.log('========')
-}
 
 const content = {
     whoami,
@@ -175,8 +173,7 @@ const content = {
     readConfigFile,
     writeConfigFile,
     changeOwner,
-    flushChromeDNS,
-    changePassword
+    flushChromeDNS
 };
 
 export default content;

@@ -41,10 +41,10 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon1.png"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon1.png"
     },
     "linux": {
       "icon": "build/icons"

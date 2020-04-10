@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Tray, Menu } from 'electron'
+import { app, BrowserWindow, Menu, Tray} from 'electron'
 import path from 'path';
 
 /**
@@ -33,16 +33,12 @@ function createWindow() {
         height: 563,
         useContentSize: true,
         width: 1000,
-        icon: path.join(__static, './icon/icon.png')
+        icon: path.join(__static, './icon/icon1.png')
     })
-
     if (process.platform === 'darwin') {
-        app.dock.setIcon(`${path.join(__static, './icon/icon.png')}`);
+        app.dock.setIcon(`${path.join(__static, './icon/icon1.png')}`);
     }
-
-    // tray = new Tray(path.join(__static, './icon/icon.png'));
-    // tray.setToolTip('myhost')
-
+    // Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu));
     mainWindow.loadURL(winURL)
 
     mainWindow.on('closed', () => {
@@ -51,11 +47,13 @@ function createWindow() {
 }
 
 app.on('ready', () => {
+
     createWindow();
-    let iconPath = path.join(__static, './icon/icon.png');
+    let iconPath = path.join(__static, './icon/icon1.png');
     tray = new Tray(iconPath);
-    tray.setToolTip('my host');
+    tray.setToolTip('meili host');
     Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu));
+    
 })
 
 app.on('window-all-closed', () => {

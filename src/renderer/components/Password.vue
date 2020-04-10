@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" v-if="show">
+  <div class="dialog" v-if="showPwdDialog || show">
     <div class="dialog-content">
       <div class="label">请输入你的电脑开机密码</div>
       <input
@@ -18,7 +18,7 @@ import FileUtil from "@/utils/files.js";
 export default {
   name: "host-context",
   components: {},
-  props: {},
+  props: ['showPwdDialog'],
   data() {
     return {
       show: false,
@@ -51,6 +51,7 @@ export default {
       let owner = FileUtil.whoami;
         this.val = val;
       this.show = false;
+      this.$emit('showPwdDialogEvent', false);
       FileUtil.changeOwner(val, owner, (err, stdout, stderr) => {
         if (err) {
           this.show = true;

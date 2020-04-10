@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 
 let aesEncrypt = function (data, key) { // 加密
-    console.log(data, key)
     const cipher = crypto.createCipher('aes192', key);
     var crypted = cipher.update(data, 'utf8', 'hex');
     crypted += cipher.final('hex');

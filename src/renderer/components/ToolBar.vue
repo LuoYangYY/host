@@ -55,7 +55,6 @@ export default {
     },
     flushChromeDNS() {
         FileUtil.flushChromeDNS();
-      console.log("flushChromeDNS");
     }
   }
 };

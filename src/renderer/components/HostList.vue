@@ -70,6 +70,7 @@ export default {
 
 <style scope>
 .wrapper {
+    padding-bottom: 130px;
 }
 .wrapper-item {
   height: 40px;

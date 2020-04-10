@@ -27,7 +27,11 @@
           ></host-context> -->
       </div>
     </div>
-    <password></password>
+    <div class="host-footer">
+      <div class="left">&copy; copyright 2020, power by LY</div>
+      <div class="iconfont icon-shezhi" @click="showPwdDialogEvent(true)"></div>
+    </div>
+    <password :showPwdDialog="showPwdDialog" @showPwdDialogEvent="showPwdDialogEvent"></password>
   </div>
 </template>
 
@@ -59,7 +63,8 @@ export default {
     return {
       showHostIndex: 0,
       filelist: localFiles,
-      showContext: ""
+      showContext: "",
+      showPwdDialog: false
     };
   },
   mounted() {
@@ -133,6 +138,9 @@ export default {
     textareaHandle(e) {
       let value = e.target.value;
       FileUtil.writeFile(this.filelist[this.showHostIndex].name, value);
+    },
+    showPwdDialogEvent(state){
+        this.showPwdDialog = state;
     }
   }
 };
@@ -173,6 +181,7 @@ body {
   background: #373960;
   height: 100%;
   padding: 20px;
+  overflow: auto;
 }
 .host-context-right {
   background: #2a2c35;
@@ -197,5 +206,23 @@ body {
   border: none;
   line-height: 2;
   letter-spacing: 1px;
+  padding-bottom: 80px;
+}
+.host-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  line-height: 40px;
+  background: #191a30;
+  color: #fff;
+  padding: 0 20px;
+}
+.host-footer .left {
+  float: left;
+}
+.host-footer .iconfont {
+  float: right;
 }
 </style>
