@@ -1,5 +1,5 @@
 {
-  "name": "host",
+  "name": "cchost",
   "version": "0.0.1",
   "author": "luoyang",
   "description": "host切换工具",
@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "host",
-    "appId": "host",
+    "productName": "cchost",
+    "appId": "cchost",
     "directories": {
       "output": "build"
     },

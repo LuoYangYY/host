@@ -17,7 +17,7 @@ const winURL = process.env.NODE_ENV === 'development'
 let appMenu = [{
     label: "应用",
     submenu: [
-        { label: "Quit", accelerator: "Command+Q", click: function () { app.quit(); } }
+        { label: "退出", accelerator: "Command+Q", click: function () { app.quit(); } }
     ]
 }
 ];
@@ -38,22 +38,21 @@ function createWindow() {
     if (process.platform === 'darwin') {
         app.dock.setIcon(`${path.join(__static, './icon/icon1.png')}`);
     }
-    // Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu));
     mainWindow.loadURL(winURL)
 
     mainWindow.on('closed', () => {
         mainWindow = null
     })
 }
+app.name = 'test'
 
 app.on('ready', () => {
 
     createWindow();
-    let iconPath = path.join(__static, './icon/icon1.png');
+    let iconPath = path.resolve(__static, './icon/icon3.png');
     tray = new Tray(iconPath);
-    tray.setToolTip('meili host');
+    tray.setToolTip('my host');
     Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu));
-    
 })
 
 app.on('window-all-closed', () => {
